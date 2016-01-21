@@ -1,0 +1,14 @@
+import com.edsoft.ClickStream;
+import com.edsoft.ClickStreamCep
+import com.edsoft.SimpleProducer;
+
+
+
+rule "missing link"
+    when
+    $stream : ClickStream( clickCount > ClickStream.THRESHOLD )
+    then
+    ClickStreamCep cep = new ClickStreamCep($stream.getPrev_id());
+        SimpleProducer.sendMail(cep.toString());
+        //SimpleProducer.sendMail("");
+end
