@@ -1,29 +1,27 @@
 package com.edsoft
+import com.edsoft.iot.Data
 
 class RulesExecutor() extends Serializable {
 
   //evaluate all the rules and send the result back to
-
-
-  def evalRulesClick(incomingEvents: Iterator[ClickStream]): Iterator[ClickStream] = {
-    val ksession = KieSessionFactory.getKieSession()
-    //ksession.execute(incomingEvents)
-    val patients = incomingEvents.map(patient => {
-      patient.addTime()
-      ksession.execute(patient)
-      patient
+  def evalRulesClick(incomingEvents: Iterator[Data]): Iterator[Data] = {
+    val ksession = KieSessionFactory.getKieSession
+    val events = incomingEvents.map(event => {
+      event.addTime()
+      ksession.execute(event)
+      event
     })
-    patients
+    events
   }
 
-  def evalRuleSingleClick(event: ClickStream) = {
+  def evalRuleSingleClick(event: Data) = {
 
-    val ksession = KieSessionFactory.getKieSession()
+    val ksession = KieSessionFactory.getKieSession
     ksession.execute(event)
   }
 
-  def evalRulesIoT(incomingEvents: Iterator[ClickStream]): Iterator[ClickStream] = {
-    val ksession = KieSessionFactory.getKieSession()
+  def evalRulesIoT(incomingEvents: Iterator[Data]): Iterator[Data] = {
+    val ksession = KieSessionFactory.getKieSession
 
     val patients = incomingEvents.map(patient => {
       ksession.execute(patient)

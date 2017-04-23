@@ -1,0 +1,75 @@
+import com.edsoft.iot.Data;
+import com.edsoft.iot.AirportData;
+import com.edsoft.ClickStreamCep
+import com.edsoft.SimpleProducer
+import com.edsoft.iot.AirportDataProducer;
+//global java.lang.String status;
+import com.edsoft.iot.State;
+
+rule "set-state1"
+    when
+        $stream : AirportData(sensorOperation=="auth")
+        s : State( state == State.NOTRUN)
+    then
+        s.setState(State.LOGIN);
+end
+rule "set-state2"
+    when
+        $stream : AirportData(sensorOperation=="record" || sensorOperation=="move")
+        s : State( state == State.LOGIN || state == State.RUNNING)
+    then
+        s.setState(State.RUNNING);
+end
+rule "set-state3"
+    when
+        $stream : AirportData(sensorOperation=="halt")
+        s : State( state == State.RUNNING)
+    then
+        s.setState(State.NOTRUN);
+end
+rule "check-C1"
+    when
+        $stream : AirportData(sensorOperation=="move" || sensorOperation=="record")
+        s : State(state == State.NOTRUN)
+    then
+        System.out.println($stream);
+        System.out.println("Invalid Invocation - Constraint 1");
+        AirportDataProducer.sendKafkaFromEsper($stream);
+end
+rule "check-C2"
+    when
+        $stream : AirportData(sensorOperation=="halt")
+        s: State(state == State.NOTRUN)
+    then
+        System.out.println($stream);
+        System.out.println("Invalid Invocation - Constraint 2");
+        AirportDataProducer.sendKafkaFromEsper($stream);
+end
+/*rule "check-C1"
+    when
+        $stream : AirportData(sensorOperation=="move" || sensorOperation=="record")
+        $prev : AirportData(this before $stream, sensorOperation!="auth")
+    then
+        System.out.println($stream);
+        System.out.println("Invalid Invocation - Constraint 1");
+        AirportDataProducer.sendKafkaFromEsper($stream);
+end
+rule "check-C2"
+    when
+        $stream : AirportData(sensorOperation=="halt")
+        $prev : AirportData(this before $stream, sensorOperation!="move")
+        $prev1 : AirportData(this before $stream, sensorOperation!="record")
+    then
+        System.out.println($stream);
+        System.out.println("Invalid Invocation - Constraint 2");
+        AirportDataProducer.sendKafkaFromEsper($stream);
+end*/
+
+/*rule "check-test"
+    when
+        $stream : AirportData(sensorOperation=="move" || sensorOperation=="record")
+    then
+        System.out.println($stream);
+        System.out.println("Invalid Invocation - Test 1");
+        AirportDataProducer.sendKafkaFromEsper($stream);
+end*/

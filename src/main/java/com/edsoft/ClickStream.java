@@ -65,12 +65,12 @@ public class ClickStream implements java.io.Serializable {
         this.timeList = timeList;
     }
 
-    @Override
-    public String toString() {
-        return prev_id + "\t" + current_id + "\t" + clickCount + "\t" + assing + "\t" + timeList;
-    }
-
     public void addTime() {
         timeList.add(System.nanoTime());
+    }
+
+    @Override
+    public String toString() {
+        return prev_id + "\t" + current_id + "\t" + clickCount;
     }
 }

@@ -1,14 +1,65 @@
-import com.edsoft.ClickStream;
+import com.edsoft.iot.Data;
 import com.edsoft.ClickStreamCep
-import com.edsoft.SimpleProducer;
+import com.edsoft.SimpleProducer
 
-
-
-rule "missing link"
+rule "rule 1"
     when
-    $stream : ClickStream( clickCount > ClickStream.THRESHOLD )
+    $stream : Data( sensorType=="A", value>1250 )
     then
-    ClickStreamCep cep = new ClickStreamCep($stream.getPrev_id());
-        SimpleProducer.sendMail(cep.toString());
-        //SimpleProducer.sendMail("");
+    System.out.println($stream);
+     SimpleProducer.sendKafkaAgain($stream);
 end
+rule "rule 2"
+    when
+    $stream : Data( sensorType=="B", value>3072 )
+    then
+    System.out.println($stream);
+     SimpleProducer.sendKafkaAgain($stream);
+end
+rule "rule 3"
+    when
+    $stream : Data( sensorType=="C", value>50 )
+    then
+    System.out.println($stream);
+     SimpleProducer.sendKafkaAgain($stream);
+end
+rule "rule 4"
+    when
+    $stream : Data( sensorType=="D", value>50 )
+    then
+    System.out.println($stream);
+     SimpleProducer.sendKafkaAgain($stream);
+end
+
+rule "kural 5"
+    when
+    $stream : Data( sensorType=="A", value>1250)
+    $stream2: Data(this != $stream, sensorType=="B", value>3072, id==($stream.id))
+    $stream3: Data(this != $stream, this !=$stream2, sensorType=="C", value>50, id==($stream.id),id==($stream2.id))
+    then
+     System.out.println("İşlem başarılı.Sensör1:"+$stream);
+     System.out.println("               Sensör2:"+$stream2);
+     System.out.println("               Sensör4:"+$stream3);
+     SimpleProducer.sendKafkaAgain2($stream);
+end
+rule "kural 6"
+    when
+    $stream : Data( sensorType=="A", value>1250, $cpuid : id )
+    $stream2: Data( this != $stream, sensorType=="B", value>3072, id==($stream.id))
+    $stream3: Data( this != $stream, this !=$stream2, sensorType=="D", value>50, id==($stream.id),id==($stream2.id))
+    then
+     System.out.println("İşlem başarılı.Sensör1:"+$stream);
+     System.out.println("               Sensör2:"+$stream2);
+     System.out.println("               Sensör4:"+$stream3);
+     SimpleProducer.sendKafkaAgain2($stream);
+end
+/*rule "kural 5"
+    when
+    $stream : Data( sensorType=="A", value>1250)
+    stream2: Data( sensorType=="B", value>3072)
+    then
+     System.out.println("İşlem başarılı.Sensör1:"+$stream);
+
+     SimpleProducer.sendKafkaAgain2($stream);
+end
+*/

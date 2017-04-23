@@ -22,6 +22,7 @@ public class KieSessionFactory implements Serializable {
     static StatelessKieSession statelessKieSession;
 
     public static StatelessKieSession getKieSession() throws FileNotFoundException, InstantiationException, IllegalAccessException {
+        System.out.println("kieSession Phase");
         if (statelessKieSession == null)
             statelessKieSession = getNewKieSession();
         return statelessKieSession;
@@ -40,12 +41,14 @@ public class KieSessionFactory implements Serializable {
 
         KieServices kieServices = KieServices.Factory.get();
 
+        /*KieBaseConfiguration config = KieServices.Factory.get().newKieBaseConfiguration();
+        config.setOption( EventProcessingOption.STREAM );*/
+
         //  FileInputStream resource = new FileInputStream(drlFileName);
 
         KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
         KieRepository kieRepository = kieServices.getRepository();
-
-        Resource resource = ResourceFactory.newClassPathResource("clickrules.drl");
+        Resource resource = ResourceFactory.newClassPathResource("clikrules.drl");
         //kieResources.newFileSystemResource(drlFileName);
         kieFileSystem.write(resource);
         // kieFileSystem.write("/src/main/resources/clickrules.drl", kieServices.getResources().newInputStreamResource(resource));

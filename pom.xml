@@ -18,6 +18,7 @@
         <encoding>UTF-8</encoding>
         <scala.tools.version>2.10</scala.tools.version>
         <scala.version>2.11.7</scala.version>
+        <spark.version>1.6.0</spark.version>
     </properties>
 
     <dependencyManagement>
@@ -26,7 +27,7 @@
                 <groupId>org.drools</groupId>
                 <artifactId>drools-bom</artifactId>
                 <type>pom</type>
-                <version>6.3.0.Final</version>
+                <version>6.5.0.Final</version>
                 <scope>import</scope>
             </dependency>
         </dependencies>
@@ -40,12 +41,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>textmagic</groupId>
-            <artifactId>textmagic-sms-api</artifactId>
-            <version>1.0</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20140107</version>
@@ -53,17 +48,17 @@
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-streaming_2.11</artifactId>
-            <version>1.5.2</version>
+            <version>${spark.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core_2.11</artifactId>
-            <version>1.5.2</version>
+            <version>${spark.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-sql_2.11</artifactId>
-            <version>1.5.2</version>
+            <version>${spark.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kie</groupId>
@@ -88,7 +83,7 @@
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
-            <version>2.11.7</version>
+            <version>${scala.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -107,20 +102,22 @@
             <version>2.15.2</version>
         </dependency>
         <dependency>
-            <groupId>ch.ethz.inf.vs</groupId>
-            <artifactId>californium</artifactId>
-            <version>0.18.7-final</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-streaming-kafka_2.11</artifactId>
-            <version>1.5.2</version>
+            <version>${spark.version}</version>
         </dependency>
         <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>javax.mail</artifactId>
             <version>1.5.3</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/ch.ethz.inf.vs/californium -->
+        <dependency>
+            <groupId>ch.ethz.inf.vs</groupId>
+            <artifactId>californium</artifactId>
+            <version>0.18.7-final</version>
+        </dependency>
+
     </dependencies>
 
     <build>
